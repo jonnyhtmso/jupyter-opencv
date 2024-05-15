@@ -1,8 +1,11 @@
 FROM ubuntu:16.04
-MAINTAINER Michele Dallachiesa <michele.dallachiesa@gmail.com>
+MAINTAINER Jonny Zhong <jonny@moli.tech>
 # Container providing Jupyter notebook server with Python3 bindings for OpenCV 3.4.0
 # Based on https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
 # Not compiling/installing templates, added gtk support
+
+
+ADD sources.list /apt/apt/
 
 USER root
 
@@ -18,7 +21,7 @@ ENV LANG en_US.UTF-8
 
 # Install python3, and activate python3.5 as default python interpreter
 RUN apt-get -y install python3-dev python3 python3-pip python3-venv
-RUN pip3 install --upgrade pip
+RUN pip3 install -i https://pypi.tuna.tsinghua.edu.cn/simple --upgrade pip
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.5 1
 
 # Install packages required for compiling opencv
@@ -75,7 +78,7 @@ RUN rm -rf /root/opencv*
 
 # Install python packages for data science
 ADD requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r /tmp/requirements.txt
 
 # Install additional system packages
 RUN apt-get -y install x11-apps
